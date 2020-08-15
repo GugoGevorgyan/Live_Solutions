@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Products;
 use Illuminate\Http\Request;
+use App\User;
 
 class ProductsController extends Controller
 {
@@ -55,7 +56,6 @@ class ProductsController extends Controller
             'image'=>  json_encode($images),
             'description' =>$request->description,
             'name' => $request->name,
-//            'fdefe'=> \GuzzleHttp\json_encode()
         ]);
         return 'Your product has been sent';
     }
@@ -103,5 +103,18 @@ class ProductsController extends Controller
     public function destroy(Products $products)
     {
         //
+    }
+
+    public function user_products(Request $request){
+//        $user = User::find($request->user_id);
+//        return $request->product_id;
+//        $user->products()->attach([json_decode($request->product_id)]);
+//        return 'ok';
+        return json_decode($request->product_id)[0];
+    }
+
+    public function test(Request $request){
+        return auth()->user();
+//        return $request->header();
     }
 }

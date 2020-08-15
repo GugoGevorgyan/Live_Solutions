@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttachProductsTable extends Migration
+class CreateProductsUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,20 @@ class CreateAttachProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attach_products', function (Blueprint $table) {
+        Schema::create('products_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
-            $table->bigInteger('company_id')->unsigned();
-            $table->float('count');
-            $table->float('price');
-            $table->float('discount');
+            $table->bigInteger('products_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+//            $table->float('count');
+//            $table->float('price');
+//            $table->float('discount');
 
-            $table->foreign('product_id')
+            $table->foreign('products_id')
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
 
-            $table->foreign('company_id')
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
@@ -40,6 +40,6 @@ class CreateAttachProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attach_products');
+        Schema::dropIfExists('products_user');
     }
 }

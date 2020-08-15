@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -34,7 +35,18 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $loginData = $request->validate([
+            'email' => 'email|required',
+            'password' => 'required'
+        ]);
+
+        if (!auth()->attempt($loginData)) {
+            return response(['message' => 'Invalid Credentials']);
+        }
+
+        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+
+        return response(['user' => auth()->user(), 'access_token' => $accessToken]);
     }
 
     /**
