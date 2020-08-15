@@ -12,7 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        phpDocumentor\Reflection\DocBlock\
         // $this->call(UserSeeder::class);
         DB::table('roles')->insert([
             'name' => 'admin',
