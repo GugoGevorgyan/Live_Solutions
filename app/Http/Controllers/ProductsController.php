@@ -115,6 +115,7 @@ class ProductsController extends Controller
 
     public function test(Request $request){
         return auth()->user();
+
 //        return $request->header();
     }
 }
