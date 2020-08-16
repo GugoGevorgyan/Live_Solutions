@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\LoginController;
 use App\Mail\LiveSolutions;
 use App\User;
 use Illuminate\Http\Request;
@@ -52,20 +53,20 @@ class RegisterController extends Controller
         ];
 
 
-//        $customMessages = [
-//            'required' => 'The :attribute field is required.'
-//        ];
-//        try {
-//            $res = $this->validate($request, $rules, $customMessages);
-//        }catch (\Exception $err){
-//            return $err;
-//        }
-//
+        $customMessages = [
+            'required' => 'The :attribute field is required.'
+        ];
+        try {
+            $res = $this->validate($request, $rules, $customMessages);
+        }catch (\Exception $err){
+            return $err;
+        }
+
         $code = Str::random(20).time();
 
-//        $toEmail = $this->send($code,$request['email']);
+        $toEmail = $this->send($code,$request['email']);
 
-//        if ($toEmail === 'true'){
+        if ($toEmail === 'true'){
             User::create([
                 'fullName' => $request['fullName'],
                 'phone' => $request['phone'],
@@ -78,9 +79,12 @@ class RegisterController extends Controller
                 'password' => Hash::make($request['password']),
                 'role_id' => $request['role_id'],
             ]);
-            return "dashboard";
-//        }
-//        return  $request->email ." is unavailable: user not found ";
+            $login = new LoginController();
+            $userToken = $login->store($request);
+            return $userToken;
+        }
+        return  $request->email ." is unavailable: user not found ";
+
     }
 
     /**
@@ -129,14 +133,14 @@ class RegisterController extends Controller
     }
     public function send($code, $email)
     {
-//        $toEmail = $email;
-//
-//        try {
-//            Mail::to($toEmail)->send(new LiveSolutions($code));
-//
-//        }catch (\Exception $err){
-//            return $err;
-//        }
+        $toEmail = $email;
+
+        try {
+            Mail::to($toEmail)->send(new LiveSolutions($code));
+
+        }catch (\Exception $err){
+            return $err;
+        }
         return 'true';
     }
 
