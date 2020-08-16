@@ -32,6 +32,7 @@ class BrandController extends Controller
 //            join('products', 'users.id','orders.user_id')
             ->select('products_user.*', 'users.id')
             ->get();
+
         return $users;
     }
 
