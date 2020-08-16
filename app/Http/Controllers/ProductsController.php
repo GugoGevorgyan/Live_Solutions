@@ -16,7 +16,8 @@ class ProductsController extends Controller
     public function index()
     {
         $product = new Products();
-        return $product->all();
+//        return $product->all();
+        auth()->user()->role_id;
     }
 
     /**
@@ -56,6 +57,7 @@ class ProductsController extends Controller
             'image'=>  json_encode($images),
             'description' =>$request->description,
             'name' => $request->name,
+            'brand_id'=>$request->brand_id,
         ]);
         return 'Your product has been sent';
     }

@@ -21,7 +21,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('/login', 'LoginController');
 Route::resource('/register', 'RegisterController');
 Route::resource('/admin', 'ProductsController');
+Route::resource('/brand', 'BrandController');
 Route::get('/verify', 'RegisterController@verify');
 Route::post('/user_products', 'ProductsController@user_products');
 
 Route::post('/test', 'ProductsController@test')->middleware('auth:api');
+
+
+

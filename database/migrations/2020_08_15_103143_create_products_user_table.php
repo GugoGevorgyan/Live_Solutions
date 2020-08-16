@@ -17,6 +17,7 @@ class CreateProductsUserTable extends Migration
             $table->id();
             $table->bigInteger('products_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('brend_id')->unsigned();
 //            $table->float('count');
 //            $table->float('price');
 //            $table->float('discount');
