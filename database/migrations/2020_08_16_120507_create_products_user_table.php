@@ -17,14 +17,19 @@ class CreateProductsUserTable extends Migration
             $table->id();
             $table->bigInteger('products_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('brend_id')->unsigned();
-//            $table->float('count');
-//            $table->float('price');
-//            $table->float('discount');
+            $table->bigInteger('brand_id')->unsigned();
+            $table->float('count');
+            $table->float('price');
+            $table->float('discount');
 
             $table->foreign('products_id')
                 ->references('id')
                 ->on('products')
+                ->onDelete('cascade');
+
+            $table->foreign('brand_id')
+                ->references('id')
+                ->on('brands')
                 ->onDelete('cascade');
 
             $table->foreign('user_id')

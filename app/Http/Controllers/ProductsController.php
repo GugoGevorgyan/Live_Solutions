@@ -107,17 +107,21 @@ class ProductsController extends Controller
         //
     }
 
-    public function user_products(Request $request){
-//        $user = User::find($request->user_id);
-//        return $request->product_id;
-//        $user->products()->attach([json_decode($request->product_id)]);
-//        return 'ok';
-        return json_decode($request->product_id)[0];
+    public function attach_new_product(Request $request){
+
+        try {
+            $product = Products::find($request->product_id);
+            $user = User::find($request->company_id);
+            if ($user->products->contains($request->product_id) || $product==null) {
+                return "Something is wrong in your data";
+            } else {
+                $user->products()->attach($product, ["count" => $request->count, "price" => $request->price,
+                    "discount" => $request->discount]);
+                return "Ok";
+            }
+        }catch (\Exception $ex){
+            return $ex;
+        }
     }
 
-    public function test(Request $request){
-        return auth()->user();
-
-//        return $request->header();
-    }
 }

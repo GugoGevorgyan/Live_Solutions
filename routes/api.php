@@ -23,7 +23,7 @@ Route::resource('/register', 'RegisterController');
 Route::resource('/admin', 'ProductsController');
 Route::resource('/brand', 'BrandController');
 Route::get('/verify', 'RegisterController@verify');
-Route::post('/user_products', 'ProductsController@user_products');
+Route::post('/attach_new_product', 'ProductsController@attach_new_product');
 
 Route::post('/test', 'ProductsController@test')->middleware('auth:api');
 
