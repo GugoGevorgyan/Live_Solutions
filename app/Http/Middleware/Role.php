@@ -15,7 +15,7 @@ class role
      */
     public function handle($request, Closure $next)
     {
-
+// print_r(auth()->user()->role_id);
 //        if (auth()->user()->role_id === 1){
 //            return 'admin dashboard midlleware';
 //        }

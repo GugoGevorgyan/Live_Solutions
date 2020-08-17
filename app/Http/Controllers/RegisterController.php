@@ -83,7 +83,7 @@ class RegisterController extends Controller
             $userToken = $login->store($request);
             return $userToken;
         }
-        return  $request->email ." is unavailable: user not found ";
+        return  $toEmail->getMessage() ;
 
     }
 
