@@ -13,19 +13,30 @@ use Illuminate\Support\Facades\Auth;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware('auth:api')->group(function () {
+    Route::resource('/login', 'LoginController')->middleware('role');
+//    Route::resource('/register', 'RegisterController');
+    Route::resource('/admin', 'ProductsController');
+    Route::resource('/brand', 'BrandController');
+//    Route::get('/verify', 'RegisterController@verify');
+    Route::post('/attach_new_product', 'ProductsController@attach_new_product');
+
+    Route::post('/test', 'ProductsController@test');
+    });
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/login', 'LoginController');
+//Route::resource('/login', 'LoginController');
 Route::resource('/register', 'RegisterController');
-Route::resource('/admin', 'ProductsController');
-Route::resource('/brand', 'BrandController');
+//Route::resource('/admin', 'ProductsController');
+//Route::resource('/brand', 'BrandController');
 Route::get('/verify', 'RegisterController@verify');
-Route::post('/attach_new_product', 'ProductsController@attach_new_product');
-
-Route::post('/test', 'ProductsController@test')->middleware('auth:api');
+//Route::post('/attach_new_product', 'ProductsController@attach_new_product');
+//
+//Route::post('/test', 'ProductsController@test')->middleware('auth:api');
 
 
 

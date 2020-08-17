@@ -17,7 +17,8 @@ class ProductsController extends Controller
     {
         $product = new Products();
 //        return $product->all();
-        auth()->user()->role_id;
+        return auth()->user()->role_id ;
+//        print_r(auth()->user()) ;
     }
 
     /**
@@ -93,7 +94,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Products $products)
     {
-        //
+       return $products;
     }
 
     /**
