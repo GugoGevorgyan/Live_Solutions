@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Products;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
@@ -93,7 +94,6 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Products $products)
     {
-        //
     }
 
     /**
@@ -122,6 +122,42 @@ class ProductsController extends Controller
         }catch (\Exception $ex){
             return $ex;
         }
+    }
+
+    public function product_edit(Request $request, Products $product){
+        $added_images=array();
+        $existed_images = $request->existed_images;
+        if($files = $request->file('added_images')){
+            foreach($files as $file){
+                $name=time().$file->getClientOriginalName();
+                $file->storeAs('images', $name);
+                $added_images[]=$name;
+                array_push($existed_images, $name);
+            }
+        }
+        if ($files = $request->file('deleted_images')){
+            foreach ($files as $file){
+                Storage::delete('images'.$file);
+            }
+        }
+        $product->update([
+            'image' => json_encode($existed_images),
+        ]);
+       return $existed_images;
+    }
+
+    public function product_delete(Request $request, Products $product){
+        Products::destroy($product->id);
+    }
+
+    public function getsome(){
+        $latestPosts = DB::table('users')
+            ->join('products_user', 'users.id', '=', 'products_user.user_id');
+
+        return $users = DB::table('products')
+            ->rightJoinSub($latestPosts, 'latest_posts', function ($join) {
+                $join->on('products.id', '=', 'latest_posts.products_id');
+            })->get();
     }
 
 }
