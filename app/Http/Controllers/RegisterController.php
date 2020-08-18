@@ -133,16 +133,27 @@ class RegisterController extends Controller
     }
     public function send($code, $email)
     {
-        $toEmail = $email;
-
         try {
-            Mail::to($toEmail)->send(new LiveSolutions($code));
+            Mail::to($email)->send(new LiveSolutions($code));
 
         }catch (\Exception $err){
             return $err;
         }
         return 'true';
     }
+
+    public function bending( $email)
+    {
+        try {
+            Mail::to($email)->send(new LiveSolutions($code));
+
+        }catch (\Exception $err){
+            return $err;
+        }
+        return 'true';
+    }
+
+
 
     public function verify(Request $request)
     {

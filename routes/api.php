@@ -22,6 +22,7 @@ Route::resource('/login', 'LoginController');
 Route::resource('/register', 'RegisterController');
 Route::resource('/admin', 'ProductsController');
 Route::resource('/brand', 'BrandController');
+Route::resource('/category','CategoryController');
 Route::get('/verify', 'RegisterController@verify');
 Route::post('/attach_new_product', 'ProductsController@attach_new_product');
 

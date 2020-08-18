@@ -150,18 +150,14 @@ class ProductsController extends Controller
         Product::destroy($product->id);
     }
 
-    public function getsome(){
-         $latestPosts = DB::table('users')
-             ->select("users.fullName", "products_user.products_id as products_id")
-            ->join('products_user', 'users.id', '=', 'products_user.user_id');
-
-//         return $latestPosts->get();
-
-        return $users = DB::table('products')
-            ->select("products.name")
-            ->leftJoinSub($latestPosts, 'latest_posts', function ($join) {
-                $join->on('products.id', '=', 'latest_posts.products_id');
-            })->get();
+    public function getsome(Request $request){
+        return DB::table('users')
+            ->select('users.fullName', 'products.name', 'brands.name as Brand Name', 'count','discount')
+            ->leftJoin('product_user', 'users.id', '=', 'product_user.user_id')
+            ->leftJoin('products', 'products.id', '=', 'product_user.product_id')
+            ->leftJoin('brands', 'brands.id', '=', 'products.brand_id')
+            ->where('users.id', '=', $request->user_id)
+            ->get();
     }
 
     public function getBrand(){
