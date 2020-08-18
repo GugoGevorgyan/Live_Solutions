@@ -18,7 +18,13 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->json('image');
             $table->string('description');
+            $table->bigInteger('brand_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('brand_id')
+                ->references('id')
+                ->on('brands')
+                ->onDelete('cascade');
         });
     }
 

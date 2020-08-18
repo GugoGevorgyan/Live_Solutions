@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductsUserTable extends Migration
+class CreateProductUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateProductsUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('products_user', function (Blueprint $table) {
+        Schema::create('product_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('products_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->float('count');
             $table->float('price');
             $table->float('discount');
 
-            $table->foreign('products_id')
+            $table->foreign('product_id')
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
@@ -40,6 +40,6 @@ class CreateProductsUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products_user');
+        Schema::dropIfExists('product_user');
     }
 }

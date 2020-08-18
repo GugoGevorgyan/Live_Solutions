@@ -33,5 +33,6 @@ Route::delete('/product/delete/{product}', 'ProductsController@product_delete');
 Route::post('/get', 'ProductsController@getsome');
 
 
+Route::post('/getBrand', 'ProductsController@getBrand');
 
 

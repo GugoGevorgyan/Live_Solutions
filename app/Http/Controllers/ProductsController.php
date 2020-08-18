@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Products;
+use App\Product;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $product = new Products();
+        $product = new Product();
 //        return $product->all();
         auth()->user()->role_id;
     }
@@ -54,7 +54,7 @@ class ProductsController extends Controller
             }
         }
 
-        Products::insert( [
+        Product::insert( [
             'image'=>  json_encode($images),
             'description' =>$request->description,
             'name' => $request->name,
@@ -66,10 +66,10 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function show(Products $products)
+    public function show(Product $products)
     {
         //
     }
@@ -77,10 +77,10 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function edit(Products $products)
+    public function edit(Product $products)
     {
         //
     }
@@ -89,20 +89,20 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Products $products)
+    public function update(Request $request, Product $products)
     {
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Products $products)
+    public function destroy(Product $products)
     {
         //
     }
@@ -110,7 +110,7 @@ class ProductsController extends Controller
     public function attach_new_product(Request $request){
 
         try {
-            $product = Products::find($request->product_id);
+            $product = Product::find($request->product_id);
             $user = User::find($request->company_id);
             if ($user->products->contains($request->product_id) || $product==null) {
                 return "Something is wrong in your data";
@@ -124,7 +124,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function product_edit(Request $request, Products $product){
+    public function product_edit(Request $request, Product $product){
         $added_images=array();
         $existed_images = $request->existed_images;
         if($files = $request->file('added_images')){
@@ -146,18 +146,30 @@ class ProductsController extends Controller
        return $existed_images;
     }
 
-    public function product_delete(Request $request, Products $product){
-        Products::destroy($product->id);
+    public function product_delete(Request $request, Product $product){
+        Product::destroy($product->id);
     }
 
     public function getsome(){
-        $latestPosts = DB::table('users')
+         $latestPosts = DB::table('users')
+             ->select("users.fullName", "products_user.products_id as products_id")
             ->join('products_user', 'users.id', '=', 'products_user.user_id');
 
+//         return $latestPosts->get();
+
         return $users = DB::table('products')
-            ->rightJoinSub($latestPosts, 'latest_posts', function ($join) {
+            ->select("products.name")
+            ->leftJoinSub($latestPosts, 'latest_posts', function ($join) {
                 $join->on('products.id', '=', 'latest_posts.products_id');
             })->get();
+    }
+
+    public function getBrand(){
+//        $product = Product::find(1);
+//        return $product->getBrand();
+
+        $user = User::find(1);
+        return $user->products;
     }
 
 }
