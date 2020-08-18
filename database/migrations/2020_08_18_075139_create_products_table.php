@@ -19,11 +19,19 @@ class CreateProductsTable extends Migration
             $table->json('image');
             $table->string('description');
             $table->bigInteger('brand_id')->unsigned();
+            $table->bigInteger('company_id')->unsigned();
+            $table->bigInteger('status');
+
             $table->timestamps();
 
             $table->foreign('brand_id')
                 ->references('id')
                 ->on('brands')
+                ->onDelete('cascade');
+
+            $table->foreign('company_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

@@ -24,15 +24,15 @@ Route::resource('/admin', 'ProductsController');
 Route::resource('/brand', 'BrandController');
 Route::get('/verify', 'RegisterController@verify');
 Route::post('/attach_new_product', 'ProductsController@attach_new_product');
-
+Route::post('detach_product', 'ProductsController@detach_product');
 Route::put('/product/edit/{product}', 'ProductsController@product_edit');
-
-
 Route::delete('/product/delete/{product}', 'ProductsController@product_delete');
-
 Route::post('/get', 'ProductsController@getsome');
+Route::post('company_suggest', 'ProductsController@company_suggest');
+Route::post('admin_accept', 'AdminController@accept');
+Route::delete('admin_reject', 'AdminController@reject');
 
 
-Route::post('/getBrand', 'ProductsController@getBrand');
+
 
 

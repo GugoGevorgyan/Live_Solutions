@@ -59,6 +59,9 @@ class ProductsController extends Controller
             'description' =>$request->description,
             'name' => $request->name,
             'brand_id'=>$request->brand_id,
+            'status' => 1,
+            'company_id' => 2,
+
         ]);
         return 'Your product has been sent';
     }
@@ -124,6 +127,20 @@ class ProductsController extends Controller
         }
     }
 
+    public function detach_product(Request $request){
+        try {
+            $product = Product::find($request->product_id);
+            $user = User::find($request->company_id);
+            if ($user->products->contains($request->product_id)) {
+                $user->products()->detach($product);
+            } else {
+                return "asdsfdsf";
+            }
+        }catch (\Exception $ex){
+            return $ex;
+        }
+    }
+
     public function product_edit(Request $request, Product $product){
         $added_images=array();
         $existed_images = $request->existed_images;
@@ -150,26 +167,52 @@ class ProductsController extends Controller
         Product::destroy($product->id);
     }
 
-    public function getsome(){
-         $latestPosts = DB::table('users')
-             ->select("users.fullName", "products_user.products_id as products_id")
-            ->join('products_user', 'users.id', '=', 'products_user.user_id');
+    public function getsome(Request $request){
+//        return DB::table('users')
+//            ->select('users.fullName', 'products.name', 'brands.name as Brand Name')
+//            ->leftJoin('product_user', 'users.id', '=', 'product_user.user_id')
+//            ->leftJoin('products', 'products.id', '=', 'product_user.product_id')
+//            ->leftJoin('brands', 'brands.id', '=', 'products.brand_id')
+//            ->where('users.id', '=', $request->user_id)
+//            ->get();
+            $user = User::find($request->user_id);
+            $a = [];
 
-//         return $latestPosts->get();
-
-        return $users = DB::table('products')
-            ->select("products.name")
-            ->leftJoinSub($latestPosts, 'latest_posts', function ($join) {
-                $join->on('products.id', '=', 'latest_posts.products_id');
-            })->get();
+            $products = $user->products;
+//            $brand = $user->gago();
+            foreach ($products as $product){
+                array_push($a, $product->name);
+                array_push($a, $product->brand->name);
+//                echo $product->brand;
+            }
+            return $a;
     }
 
-    public function getBrand(){
-//        $product = Product::find(1);
-//        return $product->getBrand();
+    public function company_suggest(Request $request){
+        $request->validate([
+            'name' => 'required|max:255',
+            'images.*' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|max:255',
+        ]);
 
-        $user = User::find(1);
-        return $user->products;
+        $images=array();
+        if($files = $request->file('images')){
+            foreach($files as $file){
+                $name=time().$file->getClientOriginalName();
+                $file->storeAs('images', $name);
+                $images[]=$name;
+            }
+        }
+
+        Product::insert( [
+            'image'=>  json_encode($images),
+            'description' =>$request->description,
+            'name' => $request->name,
+            'brand_id'=>$request->brand_id,
+            'status' => 0,
+            'company_id' => $request->user_id,
+        ]);
+
+        return "Your product is discussing";
     }
-
 }

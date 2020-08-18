@@ -39,7 +39,11 @@ class User extends Authenticatable
     ];
 
     public function products(){
-        return $this->belongsToMany('App\Product');
+        return $this->belongsToMany('App\Product')->withPivot('count', 'price', 'discount');
+    }
+
+    public function gago(){
+        return $this->products->map->brand->flatten()->pluck('name');
     }
 
 }
