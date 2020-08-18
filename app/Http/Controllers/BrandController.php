@@ -28,8 +28,8 @@ class BrandController extends Controller
     {
         $users = DB::table('users')
             ->join('products_user', 'users.id','products_user.user_id')
-//            ->join('products', 'brand.id','orders.user_id')
-//            join('products', 'users.id','orders.user_id')
+            ->join('products', 'brand.id','orders.user_id')
+            ->join('products', 'users.id','orders.user_id')
             ->select('products_user.*', 'users.id')
             ->get();
         return $users;
