@@ -20,18 +20,29 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('/login', 'LoginController');
 Route::resource('/register', 'RegisterController');
-Route::resource('/admin', 'ProductsController');
+
 Route::resource('/brand', 'BrandController');
 Route::resource('/category','CategoryController');
+
+//Route::namespace('Admin_')->group(function () {
+    Route::resource('/admin', 'AdminController');
+    Route::post('/attach_new_product', 'AdminController@attach_new_product');
+    Route::post('/detach_product', 'AdminController@detach_product');
+    Route::post('/get', 'AdminController@getsome');
+    Route::post('/company_suggest', 'AdminController@company_suggest');
+    Route::post('/admin_accept', 'AdminController@accept');
+    Route::delete('/admin_reject', 'AdminController@reject');
+//});
+
 Route::get('/verify', 'RegisterController@verify');
-Route::post('/attach_new_product', 'ProductsController@attach_new_product');
-Route::post('detach_product', 'ProductsController@detach_product');
-Route::put('/product/edit/{product}', 'ProductsController@product_edit');
-Route::delete('/product/delete/{product}', 'ProductsController@product_delete');
-Route::post('/get', 'ProductsController@getsome');
-Route::post('company_suggest', 'ProductsController@company_suggest');
-Route::post('admin_accept', 'AdminController@accept');
-Route::delete('admin_reject', 'AdminController@reject');
+
+
+//Route::put('/product/edit/{product}', 'ProductsController@product_edit'); ->admin.@edit
+//Route::delete('/product/delete/{product}', 'ProductsController@product_delete');-> admin.@destroy
+
+
+
+
 
 
 

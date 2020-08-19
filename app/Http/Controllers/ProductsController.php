@@ -17,8 +17,7 @@ class ProductsController extends Controller
     public function index()
     {
         $product = new Product();
-//        return $product->all();
-        auth()->user()->role_id;
+        return $product->all();
     }
 
     /**
@@ -95,8 +94,27 @@ class ProductsController extends Controller
      * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $products)
+    public function update(Request $request, Product $product)
     {
+        $added_images=array();
+        $existed_images = $request->existed_images;
+        if($files = $request->file('added_images')){
+            foreach($files as $file){
+                $name=time().$file->getClientOriginalName();
+                $file->storeAs('images', $name);
+                $added_images[]=$name;
+                array_push($existed_images, $name);
+            }
+        }
+        if ($files = $request->file('deleted_images')){
+            foreach ($files as $file){
+                Storage::delete('images'.$file);
+            }
+        }
+        $product->update([
+            'image' => json_encode($existed_images),
+        ]);
+        return $existed_images;
     }
 
     /**
@@ -105,12 +123,13 @@ class ProductsController extends Controller
      * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $products)
+    public function destroy(Product $product)
     {
-        //
+        Product::destroy($product->id);
     }
 
-    public function attach_new_product(Request $request){
+    public function attach_new_product(Request $request)
+    {
 
         try {
             $product = Product::find($request->product_id);
@@ -141,31 +160,6 @@ class ProductsController extends Controller
         }
     }
 
-    public function product_edit(Request $request, Product $product){
-        $added_images=array();
-        $existed_images = $request->existed_images;
-        if($files = $request->file('added_images')){
-            foreach($files as $file){
-                $name=time().$file->getClientOriginalName();
-                $file->storeAs('images', $name);
-                $added_images[]=$name;
-                array_push($existed_images, $name);
-            }
-        }
-        if ($files = $request->file('deleted_images')){
-            foreach ($files as $file){
-                Storage::delete('images'.$file);
-            }
-        }
-        $product->update([
-            'image' => json_encode($existed_images),
-        ]);
-       return $existed_images;
-    }
-
-    public function product_delete(Request $request, Product $product){
-        Product::destroy($product->id);
-    }
 
     public function getsome(Request $request){
 
@@ -214,4 +208,19 @@ class ProductsController extends Controller
 
         return "Your product is discussing";
     }
+
+
+    public function accept(Request $request){
+        $product = Product::find($request->product_id);
+        $product->status = 1;
+        $product->save();
+        return "Your product has been accepted";
+    }
+
+
+    public function reject(Request $request){
+        $product = Product::find($request->product_id);
+        $product->delete();
+    }
+
 }
