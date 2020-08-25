@@ -35,7 +35,6 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-
         $loginData = $request->validate([
             'email' => 'email|required',
             'password' => 'required'
@@ -47,7 +46,7 @@ class LoginController extends Controller
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
-        return response(['user' => auth()->user(), 'access_token' => $accessToken]);
+        return response(['access_token' => $accessToken]);
     }
 
     /**

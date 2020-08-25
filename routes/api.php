@@ -24,15 +24,15 @@ Route::resource('/register', 'RegisterController');
 Route::resource('/brand', 'BrandController');
 Route::resource('/category','CategoryController');
 
-//Route::namespace('Admin_')->group(function () {
-    Route::resource('/admin', 'AdminController');
+Route::prefix('/Admin')->group(function () {
+    Route::resource('/', 'AdminController');
     Route::post('/attach_new_product', 'AdminController@attach_new_product');
     Route::post('/detach_product', 'AdminController@detach_product');
     Route::post('/get', 'AdminController@getsome');
     Route::post('/company_suggest', 'AdminController@company_suggest');
-    Route::post('/admin_accept', 'AdminController@accept');
-    Route::delete('/admin_reject', 'AdminController@reject');
-//});
+    Route::post('accept', 'AdminController@accept');
+    Route::delete('reject', 'AdminController@reject');
+});
 
 Route::get('/verify', 'RegisterController@verify');
 
