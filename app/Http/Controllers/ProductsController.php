@@ -17,8 +17,8 @@ class ProductsController extends Controller
     public function index()
     {
         $product = new Product();
-//        return $product->all();
-        auth()->user()->role_id;
+        return $product->all();
+//        auth()->user()->role_id;
     }
 
     /**
@@ -61,7 +61,7 @@ class ProductsController extends Controller
             'name' => $request->name,
             'brand_id'=>$request->brand_id,
             'status' => 1,
-            'company_id' => 2,
+            'company_id' => 1,
 
         ]);
         return 'Your product has been sent';

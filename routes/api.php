@@ -30,6 +30,8 @@ Route::put('/product/edit/{product}', 'ProductsController@product_edit');
 Route::delete('/product/delete/{product}', 'ProductsController@product_delete');
 Route::post('/get', 'ProductsController@getsome');
 Route::post('company_suggest', 'ProductsController@company_suggest');
+
+
 Route::post('admin_accept', 'AdminController@accept');
 Route::delete('admin_reject', 'AdminController@reject');
 
