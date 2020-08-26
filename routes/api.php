@@ -24,7 +24,7 @@ Route::resource('/register', 'RegisterController');
 Route::resource('/brand', 'BrandController');
 Route::resource('/category','CategoryController');
 
-Route::prefix('/Admin')->group(function () {
+Route::prefix('/Admin')->middleware('auth:api')->group(function () {
     Route::resource('/', 'AdminController');
     Route::post('/attach_new_product', 'AdminController@attach_new_product');
     Route::post('/detach_product', 'AdminController@detach_product');
