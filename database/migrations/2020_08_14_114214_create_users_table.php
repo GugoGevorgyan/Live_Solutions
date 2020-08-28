@@ -17,12 +17,12 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('fullName');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+//            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->bigInteger('role_id')->unsigned();
-            $table->string('phone');
-            $table->string('address');
-            $table->string('passport');
+            $table->bigInteger('role_id')->unsigned()->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('passport')->nullable();
             $table->string('status')->default(0);
             $table->string('site')->nullable();
             $table->string('code')->nullable();
@@ -32,9 +32,11 @@ class CreateUsersTable extends Migration
             $table->foreign('role_id')
                 ->references('id')
                 ->on('roles')
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -46,3 +48,4 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
     }
 }
+
