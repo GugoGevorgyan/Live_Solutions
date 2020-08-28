@@ -42,25 +42,19 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'fullName' => 'required|alpha',
-            'phone' => 'required|numeric|digits_between:7,20',
-            'address' => 'required',
-            'passport' =>'required|alpha_num',
-            'site' => 'required',
-            'code' => 'required|numeric|digits_between:8,8',
+            'fullName' => 'required|string|alpha',
+            'phone' => 'numeric|digits_between:7,20',
+            'address' => 'string',
+            'passport' =>'string|alpha_num',
+            'site' => 'string',
+            'code' => 'numeric|digits_between:8,8',
             'email' => 'sometimes|required|email',
-            'password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
         ];
-
-
         $customMessages = [
             'required' => 'The :attribute field is required.'
         ];
-        try {
-            $res = $this->validate($request, $rules, $customMessages);
-        }catch (\Exception $err){
-            return $err;
-        }
+           $this->validate($request, $rules, $customMessages);
 
         $code = Str::random(20).time();
 

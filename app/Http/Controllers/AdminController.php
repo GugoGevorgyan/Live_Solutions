@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class AdminController extends Controller
@@ -59,7 +60,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'brand_id'=>$request->brand_id,
             'status' => 1,
-            'company_id' => 2,
+            'company_id' => Auth::user()->id,
 
         ]);
         return 'Your product has been sent';
@@ -203,7 +204,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'brand_id'=>$request->brand_id,
             'status' => 0,
-            'company_id' => $request->user_id,
+            'company_id' => Auth::user()->id,
         ]);
 
         return "Your product is discussing";
