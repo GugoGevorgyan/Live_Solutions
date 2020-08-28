@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -35,15 +36,27 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $loginData = $request->validate([
+        $loginData = [
+            'email' => $request->email,
+            'password'=> $request->password,
+            ];
+
+        $validator = Validator::make($request->all(), [
             'email' => 'email|required',
             'password' => 'required'
         ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()]);
+        }
 
         if (!auth()->attempt($loginData)) {
             return response(['message' => 'Invalid Credentials']);
         }
 
+        if (auth()->user()->status != 1){
+            return response(['message' => 'Please wait untill our admin will confirm your page']);
+        }
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
         return response(['access_token' => $accessToken]);
