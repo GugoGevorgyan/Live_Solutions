@@ -54,9 +54,9 @@ class LoginController extends Controller
             return response(['message' => 'Invalid Credentials']);
         }
 
-        if (auth()->user()->status != 1){
-            return response(['message' => 'Please wait untill our admin will confirm your page']);
-        }
+//        if (auth()->user()->status != 1){
+//            return response(['message' => 'Please wait untill our admin will confirm your page']);
+//        }
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
         return response(['access_token' => $accessToken]);

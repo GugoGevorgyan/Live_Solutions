@@ -131,7 +131,6 @@ class AdminController extends Controller
 
     public function attach_new_product(Request $request)
     {
-
         try {
             $product = Product::find($request->product_id);
             $user = User::find($request->company_id);
@@ -172,14 +171,18 @@ class AdminController extends Controller
 //            ->where('users.id', '=', $request->user_id)
 //            ->get();
 //    }
-        $user = User::find($request->user_id);
-        $a = [];
-        $products = $user->products;
-        foreach ($products as $product){
-            array_push($a, $product->name);
-            array_push($a, $product->brand->name);
-        }
-        return $a;
+
+        $user = User::find($request->user_id)->with('products.brand')->where('id',$request->user_id)->get();
+        return $user;
+//        $user = User::find($request->user_id);
+//        $a = [];
+//
+//        $products = $user->products;
+//        foreach ($products as $product){
+//            array_push($a, $product->name);
+//            array_push($a, $product->brand->name);
+//        }
+//        return $a;
     }
 
     public function company_suggest(Request $request){
