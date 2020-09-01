@@ -42,20 +42,20 @@ class LoginController extends Controller
             ];
 
         $validator = Validator::make($request->all(), [
-            'email' => 'email|required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()]);
+            return response()->json(['message' => $validator->errors()], 401);
         }
 
         if (!auth()->attempt($loginData)) {
-            return response(['message' => 'Invalid Credentials']);
+            return response()->json(['message' => 'Invalid Credentials'], 401);
         }
 
         if (auth()->user()->status != 1){
-            return response(['message' => 'Please wait untill our admin will confirm your page']);
+            return response()->json(['message' => 'Please wait untill our admin will confirm your page'], 401);
         }
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
