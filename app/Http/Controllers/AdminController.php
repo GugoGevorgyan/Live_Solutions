@@ -174,6 +174,7 @@ class AdminController extends Controller
 
         $user = User::find($request->user_id)->with('products.brand')->where('id',$request->user_id)->get();
         return $user;
+
 //        $user = User::find($request->user_id);
 //        $a = [];
 //
