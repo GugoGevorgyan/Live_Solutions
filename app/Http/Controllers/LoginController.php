@@ -54,9 +54,11 @@ class LoginController extends Controller
             return response()->json(['message' => 'Invalid Credentials'], 401);
         }
 
+
         if (auth()->user()->status != 1){
             return response()->json(['message' => 'Please wait untill our admin will confirm your page'], 401);
         }
+
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
         return response(['access_token' => $accessToken]);
